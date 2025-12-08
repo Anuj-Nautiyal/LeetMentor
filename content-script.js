@@ -47,7 +47,7 @@ function startObservingEditor() {
       latestSnippet = text.slice(0, 3000); // limit size
       chrome.runtime.sendMessage({
         type: "editor_input",
-        payload: { snippet: latestSnippet }
+        payload: { snippet: latestSnippet, time: Date.now() }
       });
     }, 400)
   );
@@ -150,14 +150,21 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     const problemId = location.pathname.replace(/\/+$/, "");
     sendResponse({
       problemId,
-      snippet: latestSnippet.slice(0, 1800),
+      snippet: latestSnippet ? latestSnippet.slice(0, 1800) : "",
       url: location.href,
-      failure: lastFailureMessage
+      failure: lastFailureMessage || ""
     });
+    return; // synchronous response
   }
 
   if (msg.type === "show_hint_in_page") {
-    showHintBubble(msg.hint);
+    const hintText =
+      (msg.payload && (msg.payload.hintText || msg.payload.hint)) ||
+      msg.hint ||
+      (typeof msg === "string" ? msg : "") ||
+      "";
+    showHintBubble(hintText);
+    return;
   }
 });
 
