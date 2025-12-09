@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "LeetMentor — Hint Assistant",
+  "version": "0.1.0",
+  "description": "Observes LeetCode attempts and provides on-demand AI hints (max 3) and optional short code excerpt.",
+  "icons": {},
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LeetMentor"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.leetcode.com/*"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "alarms",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://*.leetcode.com/*",
+    "http://localhost:3000/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["styles.css"],
+      "matches": ["*://leetcode.com/*"]
+    }
+  ]
+}
