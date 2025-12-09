@@ -31,7 +31,7 @@
   "web_accessible_resources": [
     {
       "resources": ["styles.css"],
-      "matches": ["*://leetcode.com/*"]
+      "matches": ["*://*.leetcode.com/*"]
     }
   ]
 }
