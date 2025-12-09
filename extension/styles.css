@@ -17,7 +17,7 @@
 
 .lm-popup-title {
   margin: 0 0 6px 0;
-  font-size: 18px;
+  font-size: 32px;
   font-weight: 600;
   color: #0f172a;
 }
@@ -115,4 +115,112 @@
   padding: 8px;
   font-size: 12px;
   white-space: pre-wrap;
+}
+
+/* Options page styles (append to styles.css) */
+.lm-option-row {
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  margin-bottom:12px;
+}
+.lm-option-label {
+  min-width:220px;
+  font-weight:600;
+  color:#0f172a;
+}
+.lm-input {
+  width:100%;
+  padding:8px 10px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,0.08);
+  box-sizing:border-box;
+  font-size:13px;
+}
+
+/* popup header and menu */
+.lm-popup-header { margin-bottom: 6px; }
+.lm-popup-title-row { display:flex; align-items:center; gap:12px; justify-content:space-between; }
+.lm-popup-title { margin:0; font-size:18px; font-weight:600; color:#0f172a; }
+
+/* three-dot menu wrapper */
+.lm-menu-wrapper { position:relative; display:inline-block; }
+.lm-menu-btn {
+  background: transparent;
+  border: none;
+  padding:6px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.lm-menu-btn:focus { outline: 2px solid rgba(14,165,233,0.3); }
+
+/* dropdown menu */
+.lm-menu {
+  position:absolute;
+  right:0;
+  top:calc(100% + 6px);
+  min-width:320px;
+  cursor: pointer;
+  background:#ffffff;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 8px 24px rgba(2,6,23,0.08);
+  border-radius:8px;
+  z-index:2147483647;
+}
+
+/* menu item */
+.lm-menu-item {
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:8px;
+  border-radius:6px;
+  cursor:pointer;
+  position:relative;
+}
+.lm-menu-item:hover { background: #137dc63d; }
+
+/* menu item text */
+.lm-menu-item-text {
+  font-size:13px;
+  font-weight:500;
+  color:#0f172a;
+}
+/* checkbox inside menu */
+.lm-menu-checkbox { margin-top:3px; }
+
+/* tooltip */
+.lm-tooltip {
+  display:none;
+  position: absolute;
+  top: calc(100% + 30px);   /* below item */
+  right: 5px; 
+  transform:translateY(-50%);
+  white-space:wrap;
+  padding:8px 10px;
+  background:#17191c;
+  opacity: 0.8;
+  color:#fff;
+  font-size:12px;
+  border-radius:8px;
+  margin-left:10px;
+  box-shadow:0 6px 18px rgba(2,6,23,0.18);
+  max-width:320px;
+  z-index:2147483648;
+}
+
+/* show tooltip on hover over the menu item label (checkbox label area) */
+.lm-menu-item:hover > .lm-tooltip {
+  display: block;
+}
+
+
+
+/* small responsive adjustments */
+@media (max-width:360px) {
+  .lm-menu { min-width:260px; right:0; left:auto; };
+}
+
+html, body, .lm-popup, .lm-popup-body {
+  overflow: visible !important;
 }

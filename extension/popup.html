@@ -4,13 +4,40 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>LeetMentor</title>
-
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="lm-popup-body">
   <div class="lm-popup">
-    <h1 class="lm-popup-title">LeetMentor</h1>
-    <p class="lm-popup-desc">Get an on-demand hint for the current LeetCode problem (max 3 hints).</p>
+    <div class="lm-popup-header">
+      <div class="lm-popup-title-row">
+        <h1 class="lm-popup-title">LeetMentor</h1>
+
+        <!-- three-dot control -->
+        <div class="lm-menu-wrapper" id="menuWrapper" aria-haspopup="true">
+          <button id="menuBtn" class="lm-menu-btn" aria-expanded="false" aria-label="Show menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="black" aria-hidden="true">
+              <circle cx="5" cy="12" r="1.5"></circle>
+              <circle cx="12" cy="12" r="1.5"></circle>
+              <circle cx="19" cy="12" r="1.5"></circle>
+            </svg>
+          </button>
+
+          <!-- dropdown menu -->
+          <div id="menu" class="lm-menu hidden" role="menu" aria-label="LeetMentor menu">
+            <label class="lm-menu-item" for="allowSendCodePopup">
+              <input id="allowSendCodePopup" type="checkbox" class="lm-menu-checkbox" />
+              <span class="lm-menu-item-text">Allow send code to server</span>
+
+              <!-- tooltip -->
+              <div class="lm-tooltip" role="tooltip">
+                When enabled, LeetMentor may send a minimal code excerpt to your configured server to generate better hints.
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+      <p class="lm-popup-desc">Get an on-demand hint for the current LeetCode problem (max 3 hints).</p>
+    </div>
 
     <div class="lm-popup-controls">
       <button id="showHintBtn" class="lm-btn-primary">Show hint</button>
