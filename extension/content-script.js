@@ -6,7 +6,7 @@
 // - Exposes window.__leetMentorDebug for testing
 
 (() => {
-  const LOG = (...args) => { try { console.log('[LeetMentor]', ...args); } catch(e){} };
+  const LOG = (...args) => { try { console.log('[LeetMentor]', ...args); } catch (e) { } };
   LOG('content script initializing');
 
   // Inject extension stylesheet (styles.css) into page (web_accessible_resources)
@@ -200,7 +200,7 @@
         if (!b.__leetMentorAttached) {
           b.__leetMentorAttached = true;
           b.addEventListener('click', () => {
-            try { chrome.runtime.sendMessage({ type: 'run_or_submit_clicked', payload: { time: Date.now() } }); } catch(e){}
+            try { chrome.runtime.sendMessage({ type: 'run_or_submit_clicked', payload: { time: Date.now() } }); } catch (e) { }
             setTimeout(parseSubmissionResult, 1500);
           });
         }
@@ -235,9 +235,9 @@
     const pass = getPassText();
     if (fail) {
       lastFailureMessage = fail;
-      try { chrome.runtime.sendMessage({ type: 'submission_result', payload: { status: 'fail', raw: fail, time: Date.now() } }); } catch(e){}
+      try { chrome.runtime.sendMessage({ type: 'submission_result', payload: { status: 'fail', raw: fail, time: Date.now() } }); } catch (e) { }
     } else if (pass) {
-      try { chrome.runtime.sendMessage({ type: 'submission_result', payload: { status: 'pass', raw: pass, time: Date.now() } }); } catch(e){}
+      try { chrome.runtime.sendMessage({ type: 'submission_result', payload: { status: 'pass', raw: pass, time: Date.now() } }); } catch (e) { }
     }
   }
   setInterval(parseSubmissionResult, 2500);
@@ -246,7 +246,7 @@
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     try {
       LOG('onMessage', msg && msg.type, 'from', sender && sender.tab && sender.tab.id);
-    } catch(e){}
+    } catch (e) { }
 
     if (!msg || !msg.type) return;
 
@@ -259,6 +259,16 @@
         failure: lastFailureMessage || ''
       });
       return; // synchronous
+    }
+
+    if (msg.type === 'ping_for_leetmentor') {
+      try {
+        sendResponse({ ok: true, ts: Date.now() });
+      } catch (e) {
+        console.error('[LeetMentor] ping handler error', e);
+        sendResponse({ ok: false, error: String(e) });
+      }
+      return true; // signal we might sendResponse asynchronously (keeps port stable)
     }
 
     if (msg.type === 'show_hint_in_page') {
@@ -310,10 +320,10 @@
     getContext: () => ({ snippet: latestSnippet, failure: lastFailureMessage }),
     simulateFail: (msg = 'Wrong Answer on test 3') => {
       lastFailureMessage = msg;
-      try { chrome.runtime.sendMessage({ type: 'submission_result', payload: { status: 'fail', raw: msg, time: Date.now() } }); } catch(e){}
+      try { chrome.runtime.sendMessage({ type: 'submission_result', payload: { status: 'fail', raw: msg, time: Date.now() } }); } catch (e) { }
     },
     simulateHint: (text = 'Test hint') => {
-      try { showHintBubble(text); } catch(e){ console.warn(e); }
+      try { showHintBubble(text); } catch (e) { console.warn(e); }
     }
   };
 
