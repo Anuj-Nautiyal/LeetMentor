@@ -130,7 +130,7 @@ showBtn.addEventListener('click', async () => {
       hintBox.textContent = resp.hint;
     } else {
       hintArea.classList.remove('hidden');
-      hintBox.textContent = 'Hint shown on the page.';
+      hintBox.textContent = 'Reached Maximum hint limit.';
     }
 
     if (resp.action === 'ask_for_code') {
@@ -164,12 +164,53 @@ showCodeNo.addEventListener('click', () => {
   setStatus('Continuing without code excerpt.');
 });
 
-// reset hints (dev)
-resetBtn.addEventListener('click', () => {
-  chrome.runtime.sendMessage({ type: 'reset_hints' }, () => {
-    setStatus('Hint counters reset.');
-  });
-});
+async function fullResetAll() {
+
+  try {
+    // 1) Reset storage keys: settings -> defaults, remove hints caches
+    const defaultSettings = {
+      allowSendCodeToServer: true,
+      serverUrl: 'http://localhost:3000/hint'
+    };
+
+    // Set defaults and remove hint maps/cache
+    await new Promise(res => chrome.storage.local.set({ leetmentor_settings: defaultSettings }, res));
+    await new Promise(res => chrome.storage.local.remove(['leetmentor_hints_map', 'leetmentor_hint_cache'], res));
+
+    // 2) Update popup UI to initial state
+    allowSendCodePopup.checked = true;
+    hideAll();
+    setStatus('Reset to defaults');
+
+    // 3) Tell background to reset its persisted hint state (if any)
+    chrome.runtime.sendMessage({ type: 'reset_hints' }, () => {
+      // background may clear its own maps
+      console.log('reset_hints sent to background');
+    });
+
+    // 4) Ask the active tab to hide any in-page hint bubble (best-effort)
+    const tab = await getActiveTab();
+    if (tab && tab.id) {
+      chrome.tabs.sendMessage(tab.id, { type: 'hide_hint_in_page' }, resp => {
+        if (chrome.runtime.lastError) {
+          console.log('hide_hint_in_page: no content script in tab', chrome.runtime.lastError.message);
+        } else {
+          console.log('hide_hint_in_page response', resp);
+        }
+      });
+    }
+
+    // 5) Close menu if open
+    menu.classList.add('hidden');
+    menuBtn.setAttribute('aria-expanded', 'false');
+
+  } catch (err) {
+    console.error('fullResetAll error:', err);
+    setStatus('Reset failed');
+  }
+}
+resetBtn.addEventListener('click', fullResetAll);
+
 
 // initialize popup UI
 hideAll();
