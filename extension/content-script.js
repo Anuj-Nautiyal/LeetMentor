@@ -285,8 +285,15 @@
       }
       return true; // signal async/steady response (we already responded synchronously but keep safe)
     }
+    // hide hint bubble
+    if (msg.type === 'hide_hint_in_page') {
+      const b = document.getElementById('leetmentor-hint-bubble');
+      if (b) b.remove();
+      sendResponse({ ok: true });
+      return true;
+    }
   });
-
+  
   // show hint bubble
   function showHintBubble(hintText) {
     try {
