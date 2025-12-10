@@ -1,3 +1,5 @@
+const { fail } = require("assert");
+
 // options.js — handles saving / loading settings for LeetMentor
 const allowEl = document.getElementById('allowSendCode');
 const serverEl = document.getElementById('serverUrl');
