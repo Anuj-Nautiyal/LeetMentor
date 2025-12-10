@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Backend server for LeetMentor Chrome Extension with optional Ollama LLM support.",
   "main": "index.js",
+  "license": "MIT",
+
   "scripts": {
     "start": "node index.js"
   },
