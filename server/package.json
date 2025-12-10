@@ -1,10 +1,13 @@
 {
   "name": "leetmentor-server",
   "version": "1.0.0",
-  "description": "Minimal backend stub for LeetMentor",
+  "description": "Backend server for LeetMentor Chrome Extension with optional Ollama LLM support.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "express": "^4.19.0",
