@@ -146,7 +146,7 @@ showCodeYes.addEventListener('click', async () => {
   const tab = await getActiveTab();
   if (!tab) { setStatus('No active tab'); return; }
 
-  setStatus('Requesting code excerpt...');
+  setStatus('Requesting code snippet...');
   chrome.runtime.sendMessage({ type: 'request_code_snippet', tabId: tab.id }, resp => {
     if (!resp || resp.ok === false) {
       setStatus('Failed to get code snippet.');
@@ -161,7 +161,7 @@ showCodeYes.addEventListener('click', async () => {
 
 showCodeNo.addEventListener('click', () => {
   askCode.classList.add('hidden');
-  setStatus('Continuing without code excerpt.');
+  setStatus('Continuing without code snippet.');
 });
 
 async function fullResetAll() {
